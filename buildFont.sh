@@ -9,10 +9,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 folder=$DIR/RomanMasters
 font=AdobeVFPrototype
 
-# build the OTF version -- this requires an experimental build of the AFDKO which
-# is available at http://www.adobe.com/devnet/opentype/afdko/AFDKO-Variable-Font-Support.html
-buildmasterotfs $folder/$font.designspace
-buildcff2vf $folder/$font.designspace
+otf_file=$folder/$font.otf
+ttf_file=$folder/$font.ttf
+dsp_file=$folder/$font.designspace
+
+# build the OTF version -- this requires the AFDKO toolkit
+# which is available at https://github.com/adobe-type-tools/afdko
+buildmasterotfs -d "$dsp_file"
+buildcff2vf -k -d "$dsp_file"
 
 # extract and subroutinize the CFF2 table
 echo 'Subroutinizing' "$otf_file"
